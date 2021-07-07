@@ -1,7 +1,8 @@
+# RETSEPIILE KOLOKO , CLASS2
+#   !!!!!!!!!!!! #
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import messagebox
-import mysql.connector
 window = Tk()
 window.geometry("500x600")
 window.title("Welcome to Life Choices")
@@ -23,7 +24,11 @@ class MainScreen:
         self.login = Button(window, text="LOGIN", borderwidth=25, bg="lime", command=self.login)
         self.login.place(x=10, y=250)
         self.register = Button(window, text="REGISTER NEW USER", borderwidth=25, bg="lime", command=self.register)
-        self.register.place(x=300, y=250)
+        self.register.place(x=200, y=250)
+        self.admin = Button(window, text="ADMINISTRATION", command=self.admin, bg="lime", borderwidth=25)
+        self.admin.place(x=500, y=250)
+        self.exit = Button(window, text="EXIT", command=self.exit, bg="lime", borderwidth=25)
+        self.exit.place(x=750, y=250)
 
     def login(self):
         self.ask = messagebox.askquestion("LOGIN", "Proceed to login?")
@@ -37,14 +42,16 @@ class MainScreen:
             self.window.destroy()
             import second_screen
 
+    def admin(self):
+        self.ask = messagebox.askquestion("ADMINISTRATION", "Login to administration?")
+        if self.ask == "yes":
+            self.window.destroy()
+            import admin
 
-    def connect(self):
-        self.lifechoicesonline = mysql.connector.connect(user='Lifechoices', password='@Lifechoices1234', host='127.0.0.1',
-                                       database='lifechoicesonline', auth_plugin='mysql_native_password')
-        mycursor = self.lifechoicesonline.cursor()
-        xy = mycursor.execute('Select * from mytable')
-        for i in mycursor:
-            pass
+    def exit(self):
+        self.ask = messagebox.askquestion("QUIT APPLICATION", "Do you really want to leave the page?")
+        if self.ask == "yes":
+            self.window.destroy()
 
 i = MainScreen()
 window.mainloop()

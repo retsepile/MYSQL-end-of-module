@@ -2,7 +2,7 @@ from tkinter import *
 window = Tk()
 window.geometry("500x600")
 window.title("REGISTER")
-window.config(bg="black")
+
 
 
 class RegiSter:
@@ -31,8 +31,20 @@ class RegiSter:
         self.kin_no.place(x=10, y=300)
         self.kin_entry = Entry(window)
         self.kin_entry.place(x=200, y=300)
-        self.submit = Button(window, text="SUBMIT", borderwidth=25, bg="black", fg="white")
-        self.submit.place(x=200, y=400)
+        self.submit = Button(window, text="SIGNUP", borderwidth=15)
+        self.submit.place(x=0, y=400)
+        self.clear = Button(window, text="CLEAR", borderwidth=15, command=self.clear)
+        self.clear.place(x=250, y=400)
+
+    def clear(self):
+        self.name_entry.delete(0, END)
+        self.surname_entry.delete(0, END)
+        self.identity_entry.delete(0, END)
+        self.cell_entry.delete(0, END)
+        self.next_entry.delete(0, END)
+        self.kin_entry.delete(0, END)
+        self.cell_entry.delete(0, END)
+
 
 
 x = RegiSter()
