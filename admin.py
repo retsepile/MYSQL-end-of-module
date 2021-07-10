@@ -1,5 +1,6 @@
 from tkinter import *
 import mysql.connector
+from tkinter import messagebox
 window = Tk()
 window.geometry("500x500")
 
@@ -14,7 +15,7 @@ class AdminLogin:
         self.password.place(x=0, y=100)
         self.code = Entry(window)
         self.code.place(x=100, y=100)
-        self.login = Button(window, text="LOGIN")
+        self.login = Button(window, text="LOGIN", command=self.login)
         self.login.place(x=0, y=200)
 
     def submit(self):
@@ -24,46 +25,56 @@ class AdminLogin:
 
         print(f"The name entered by you is {self.username} {self.password}")
 
-    def login(self, fullname, password):
+    def login(self):
+        self.password = self.password
+        self.username = self.name
 
         # If password is entered by the
         # user
-        if password:
-            mydb = mysql.connector.connect(user='sql6423546',
-                                         password='AQ15mTbUCB',
-                                         host='sql6.freesqldatabase.com',
-                                         database='sql6423546',
-                                         auth_plugin='mysql_native_password',
-                                         port='3306')
+        if self.password:
+            mydb = mysql.connector.connect(user='Lifechoices',
+                                         password='@Lifechoices1234',
+                                         host='127.0.0.1',
+                                         database='lifechoicesonline',
+                                         auth_plugin='mysql_native_password',)
+            mycursor = mydb.cursor()
+
+        elif self.username:
+            mydb = mysql.connector.connect(user='Lifechoices',
+                                           password='@Lifechoices1234',
+                                           host='127.0.0.1',
+                                           database='lifechoicesonline',
+                                           auth_plugin='mysql_native_password', )
             mycursor = mydb.cursor()
 
         # If no password is entered by the
         # user
         else:
-            mydb = mysql.connector.connect(user='sql6423546',
-                                                 password='AQ15mTbUCB',
-                                                 host='sql6.freesqldatabase.com',
-                                                 database='sql6423546',
-                                                 auth_plugin='mysql_native_password',
-                                                 port='3306')
+            mydb = mysql.connector.connect(user='Lifechoices',
+                                                 password='@Lifechoices',
+                                                 host='127.0.0.1',
+                                                 database='lifechoicesonline',
+                                                 auth_plugin='mysql_native_password',)
             mycursor = mydb.cursor()
 
         # A Table in the database
-        savequery = "select * from user"
+        query = ("SELECT * from admin WHERE username = username AND password = password")
+        val = (self.name.get(), self.code.get())
 
         try:
-            mycursor.execute(savequery)
+            mycursor.execute(query)
             mycursor = mycursor.fetchall()
 
             # Printing the result of the
             # query
-            for x in mycursor:
-                print(x)
-            print("Query Executed successfully")
+            messagebox.showinfo("Status", "Query Executed successfully")
+            window.destroy()
+            import admin_second
 
-        except:
-            mydb.rollback()
-            print("Error occurred")
+
+        except mysql.connector.Error as err:
+            messagebox.showinfo("ERROR", "Error occurred" + str(err))
+
 
 
 x = AdminLogin()

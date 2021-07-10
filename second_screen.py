@@ -1,8 +1,10 @@
 from tkinter import *
+from tkinter import messagebox
+import mysql.connector
+from datetime import datetime
 window = Tk()
 window.geometry("500x600")
 window.title("REGISTER")
-
 
 
 class RegiSter:
@@ -31,7 +33,7 @@ class RegiSter:
         self.kin_no.place(x=10, y=300)
         self.kin_entry = Entry(window)
         self.kin_entry.place(x=200, y=300)
-        self.submit = Button(window, text="SIGNUP", borderwidth=15)
+        self.submit = Button(window, text="SIGNUP", borderwidth=15, command=self.sign)
         self.submit.place(x=0, y=400)
         self.clear = Button(window, text="CLEAR", borderwidth=15, command=self.clear)
         self.clear.place(x=250, y=400)
@@ -45,6 +47,32 @@ class RegiSter:
         self.kin_entry.delete(0, END)
         self.cell_entry.delete(0, END)
 
+    def sign(self):
+        try:
+            database = mysql.connector.connect(
+                host="127.0.0.1",
+                user="Lifechoices",
+                passwd="@Lifechoices1234",
+                database="Registration",
+                auth_plugin="mysql_native_password"
+            )
+
+            today = datetime.today()
+
+            cursor = database.cursor()
+
+            query = "INSERT INTO new ( name, surname, cellphone,id) VALUES (%s, %s, %s, %s)"
+
+            values = (self.name_entry.get(), self.surname_entry.get(), self.cell_entry.get(),
+                      self.identity_entry.get(), today)
+            cursor = cursor.fetchall(query)
+            cursor.execute(query)
+            database.commit()
+            messagebox.showinfo("Status", "Registration Completed!!!")
+            window.destroy()
+
+        except mysql.connector.Error as err:  # This will show all mysql errors
+            messagebox.showerror("Error", "Something went wrong: " + str(err))
 
 
 x = RegiSter()
